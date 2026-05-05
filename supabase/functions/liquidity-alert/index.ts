@@ -1,8 +1,10 @@
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
+import { Resend } from "npm:resend";
 
 type AlertPayload = {
   body: string;
   level: "risk" | "urgent";
+  recipient?: string;
   subject: string;
 };
 
@@ -57,8 +59,8 @@ serve(async (request) => {
   }
 
   const payload = (await request.json()) as AlertPayload;
-  const destination = Deno.env.get("LIQUIDITY_ALERT_EMAIL") ?? "gerencia@cuchermercado.test";
-  const resendApiKey = Deno.env.get("RESEND_API_KEY");
+  const destination = payload.recipient ?? Deno.env.get("LIQUIDITY_ALERT_EMAIL") ?? "maxirodri675@gmail.com";
+  const resendApiKey = Deno.env.get("RESEND_API_KEY") ?? "re_SDyZ7Pqy_PB6qX8sWnCkVMxn7PuxpcXcW";
 
   if (!resendApiKey) {
     await logNotification(request, payload, "simulated", destination, "supabase-edge", {
@@ -76,45 +78,54 @@ serve(async (request) => {
     );
   }
 
-  const emailResponse = await fetch("https://api.resend.com/emails", {
-    body: JSON.stringify({
-      from: "Cuchermercado MIS <alerts@resend.dev>",
-      subject: payload.subject,
-      text: payload.body,
-      to: [destination],
-    }),
-    headers: {
-      Authorization: `Bearer ${resendApiKey}`,
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-  });
+  try {
+    const resend = new Resend(resendApiKey);
 
-  if (!emailResponse.ok) {
-    const error = await emailResponse.text();
-    await logNotification(request, payload, "failed", destination, "resend", {
-      error,
+    const { data, error } = await resend.emails.send({
+      from: "Cuchermercado <onboarding@resend.dev>",
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
+          <div style="background-color: ${payload.level === "urgent" ? "#b91c1c" : "#d97706"}; padding: 24px; color: white;">
+            <h1 style="margin: 0; font-size: 20px;">${payload.subject}</h1>
+          </div>
+          <div style="padding: 24px; color: #1e293b;">
+            <p style="font-size: 16px; line-height: 24px; margin-bottom: 24px;">
+              Se ha detectado una situación que requiere atención inmediata en el flujo de caja.
+            </p>
+            <div style="background-color: #f8fafc; padding: 16px; border-radius: 6px; margin-bottom: 24px;">
+              <pre style="white-space: pre-wrap; font-family: inherit; margin: 0; color: #475569;">${payload.body}</pre>
+            </div>
+            <p style="font-size: 14px; color: #64748b;">
+              Este es un correo automático generado por el Sistema de Gestión de Cuchermercado.
+            </p>
+          </div>
+          <div style="background-color: #f1f5f9; padding: 16px; text-align: center; font-size: 12px; color: #94a3b8;">
+            &copy; 2026 Cuchermercado MIS - Ingeniería de Software III
+          </div>
+        </div>
+      `,
+      subject: payload.subject,
+      to: [destination],
     });
+
+    if (error) {
+      await logNotification(request, payload, "failed", destination, "resend", error as any);
+      return Response.json({ delivered: false, error }, { headers: corsHeaders, status: 500 });
+    }
+
+    await logNotification(request, payload, "sent", destination, "resend", data as any);
 
     return Response.json(
       {
-        delivered: false,
-        error,
+        delivered: true,
+        level: payload.level,
+        provider: "resend",
+        result: data,
       },
-      { headers: corsHeaders, status: 502 },
+      { headers: corsHeaders },
     );
+  } catch (err) {
+    const error = err instanceof Error ? err.message : "Unknown error";
+    return Response.json({ delivered: false, error }, { headers: corsHeaders, status: 500 });
   }
-
-  const result = await emailResponse.json();
-  await logNotification(request, payload, "sent", destination, "resend", result);
-
-  return Response.json(
-    {
-      delivered: true,
-      level: payload.level,
-      provider: "resend",
-      result,
-    },
-    { headers: corsHeaders },
-  );
 });

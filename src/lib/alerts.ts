@@ -7,6 +7,7 @@ import type { LiquidityStatus } from "@/lib/liquidity";
 export async function triggerLiquidityAlert(
   supabase: SupabaseClient<Database>,
   status: LiquidityStatus,
+  recipient?: string,
 ) {
   const alert = buildLiquidityAlert(status);
 
@@ -15,7 +16,7 @@ export async function triggerLiquidityAlert(
   }
 
   const { data, error } = await supabase.functions.invoke("liquidity-alert", {
-    body: alert,
+    body: { ...alert, recipient },
   });
 
   if (error) {
