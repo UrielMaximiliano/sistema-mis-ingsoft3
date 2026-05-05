@@ -58,7 +58,9 @@ export function TreasuryReconciliation({ movements }: { movements: CashMovement[
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <CardTitle>Reconciliacion semanal</CardTitle>
-            <p className="mt-2 text-sm text-slate-600">Semana desde {weekStart}</p>
+            <p className="mt-2 text-sm" style={{ color: "var(--text-secondary)" }}>
+              Semana desde {weekStart}
+            </p>
           </div>
           <Button
             disabled={locked || locking}
@@ -73,37 +75,60 @@ export function TreasuryReconciliation({ movements }: { movements: CashMovement[
       </CardHeader>
       <CardContent>
         <div className="mb-4 grid gap-3 sm:grid-cols-3">
-          <div className="rounded-lg border border-stone-200 bg-stone-50 p-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+          <div
+            className="rounded-lg border p-3"
+            style={{ background: "var(--bg-inset)", borderColor: "var(--border-secondary)" }}
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.12em]" style={{ color: "var(--text-tertiary)" }}>
               Registros
             </p>
-            <p className="mt-1 text-xl font-semibold text-slate-950">{movements.length}</p>
+            <p className="mt-1 text-xl font-semibold font-mono" style={{ color: "var(--text-primary)" }}>
+              {movements.length}
+            </p>
           </div>
-          <div className="rounded-lg border border-teal-100 bg-teal-50 p-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-teal-700">
+          <div
+            className="rounded-lg border p-3"
+            style={{ background: "var(--accent-emerald-soft)", borderColor: "var(--border-secondary)" }}
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.12em]" style={{ color: "var(--accent-emerald)" }}>
               Real
             </p>
-            <p className="mt-1 text-xl font-semibold text-teal-900">{formatMoney(totals.real)}</p>
+            <p className="mt-1 text-xl font-semibold font-mono" style={{ color: "var(--text-primary)" }}>
+              {formatMoney(totals.real)}
+            </p>
           </div>
-          <div className="rounded-lg border border-blue-100 bg-blue-50 p-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-blue-700">
+          <div
+            className="rounded-lg border p-3"
+            style={{ background: "var(--accent-cyan-soft)", borderColor: "var(--border-secondary)" }}
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.12em]" style={{ color: "var(--accent-cyan)" }}>
               Proyectado
             </p>
-            <p className="mt-1 text-xl font-semibold text-blue-900">
+            <p className="mt-1 text-xl font-semibold font-mono" style={{ color: "var(--text-primary)" }}>
               {formatMoney(totals.projected)}
             </p>
           </div>
         </div>
 
         {message ? (
-          <p className="mb-4 rounded-lg bg-stone-100 px-3 py-2 text-sm font-medium text-slate-700">
+          <p
+            className="mb-4 rounded-lg px-3 py-2 text-sm font-medium"
+            style={{ background: "var(--bg-inset)", color: "var(--text-secondary)" }}
+          >
             {message}
           </p>
         ) : null}
         <div className="overflow-x-auto">
           <table className="w-full min-w-[760px] border-collapse text-left text-sm">
-            <thead className="bg-stone-50">
-              <tr className="border-y border-stone-200 text-xs uppercase tracking-[0.08em] text-slate-500">
+            <thead>
+              <tr
+                className="border-y text-xs uppercase tracking-[0.08em]"
+                style={{
+                  background: "var(--bg-inset)",
+                  borderColor: "var(--border-primary)",
+                  color: "var(--text-tertiary)",
+                }}
+              >
                 <th className="py-3 pr-4">Fecha</th>
                 <th className="py-3 pr-4">Tipo</th>
                 <th className="py-3 pr-4">Categoria</th>
@@ -114,24 +139,37 @@ export function TreasuryReconciliation({ movements }: { movements: CashMovement[
             </thead>
             <tbody>
               {movements.length ? (
-                movements.map((movement) => (
-                  <tr className="border-b border-stone-100 hover:bg-stone-50" key={movement.id}>
-                    <td className="py-3 pr-4 text-slate-700">{movement.date}</td>
-                    <td className="py-3 pr-4 font-medium text-slate-900">
+                movements.map((movement, i) => (
+                  <tr
+                    className="border-b transition-colors"
+                    key={movement.id}
+                    style={{
+                      borderColor: "var(--border-secondary)",
+                      background: i % 2 === 1 ? "var(--bg-surface-alt)" : "transparent",
+                    }}
+                  >
+                    <td className="py-3 pr-4" style={{ color: "var(--text-secondary)" }}>
+                      {movement.date}
+                    </td>
+                    <td className="py-3 pr-4 font-medium" style={{ color: "var(--text-primary)" }}>
                       {movement.type === "income" ? "Ingreso" : "Egreso"}
                     </td>
-                    <td className="py-3 pr-4 text-slate-700">{movement.category}</td>
-                    <td className="py-3 pr-4 text-slate-700">{movement.channel}</td>
-                    <td className="py-3 pr-4 font-medium text-slate-900">
+                    <td className="py-3 pr-4" style={{ color: "var(--text-secondary)" }}>
+                      {movement.category}
+                    </td>
+                    <td className="py-3 pr-4" style={{ color: "var(--text-secondary)" }}>
+                      {movement.channel}
+                    </td>
+                    <td className="py-3 pr-4 font-medium font-mono" style={{ color: "var(--text-primary)" }}>
                       {formatMoney(movement.amount)}
                     </td>
                     <td className="py-3 pr-4">
                       <span
-                        className={
-                          movement.isProjected
-                            ? "rounded-lg bg-blue-50 px-2.5 py-1 font-semibold text-blue-700"
-                            : "rounded-lg bg-teal-50 px-2.5 py-1 font-semibold text-teal-700"
-                        }
+                        className="rounded-lg px-2.5 py-1 font-semibold text-xs"
+                        style={{
+                          background: movement.isProjected ? "var(--accent-cyan-soft)" : "var(--accent-emerald-soft)",
+                          color: movement.isProjected ? "var(--accent-cyan)" : "var(--accent-emerald)",
+                        }}
                       >
                         {movement.isProjected ? "Proyectado" : "Real"}
                       </span>
@@ -140,7 +178,11 @@ export function TreasuryReconciliation({ movements }: { movements: CashMovement[
                 ))
               ) : (
                 <tr>
-                  <td className="py-6 text-center text-sm text-slate-500" colSpan={6}>
+                  <td
+                    className="py-6 text-center text-sm"
+                    colSpan={6}
+                    style={{ color: "var(--text-tertiary)" }}
+                  >
                     Sin movimientos para el filtro seleccionado.
                   </td>
                 </tr>

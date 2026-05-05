@@ -86,14 +86,17 @@ export function TreasuryDataEntryForm({ categories, channels }: TreasuryDataEntr
 
   return (
     <Card className="overflow-hidden">
-      <div className="h-1 bg-[linear-gradient(90deg,#2563eb,#0f766e)]" />
+      <div className="h-1" style={{ background: "var(--gradient-bar)" }} />
       <CardHeader>
         <div className="flex items-start justify-between gap-4">
           <div>
             <CardTitle>Carga de Tesoreria</CardTitle>
-            <p className="mt-2 text-sm text-slate-600">Integracion semanal</p>
+            <p className="mt-2 text-sm" style={{ color: "var(--text-secondary)" }}>Integracion semanal</p>
           </div>
-          <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-700">
+          <span
+            className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg"
+            style={{ background: "var(--accent-cyan-soft)", color: "var(--accent-cyan)" }}
+          >
             <DatabaseZap className="size-5" />
           </span>
         </div>
@@ -194,7 +197,7 @@ export function TreasuryDataEntryForm({ categories, channels }: TreasuryDataEntr
           <div className="grid gap-2 lg:col-span-1">
             <Label htmlFor="treasury-date">Fecha</Label>
             <div className="relative">
-              <CalendarDays className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+              <CalendarDays className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2" style={{ color: "var(--text-tertiary)" }} />
               <Input
                 className="pl-9"
                 id="treasury-date"
@@ -208,11 +211,11 @@ export function TreasuryDataEntryForm({ categories, channels }: TreasuryDataEntr
 
           {message ? (
             <p
-              className={
-                message.tone === "success"
-                  ? "inline-flex items-center gap-2 rounded-lg bg-teal-50 px-3 py-2 text-sm font-medium text-teal-800 lg:col-span-4"
-                  : "rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-700 lg:col-span-4"
-              }
+              className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium lg:col-span-4"
+              style={{
+                background: message.tone === "success" ? "var(--accent-emerald-soft)" : "var(--accent-red-soft)",
+                color: message.tone === "success" ? "var(--accent-emerald)" : "var(--accent-red)",
+              }}
             >
               {message.tone === "success" ? <CheckCircle2 className="size-4" /> : null}
               {message.text}

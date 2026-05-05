@@ -55,7 +55,7 @@ export function ComparisonChartInner({
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <CardTitle>Proyectado vs real</CardTitle>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm" style={{ color: "var(--text-secondary)" }}>
               Comparacion por categoria y canal comercial.
             </p>
           </div>
@@ -94,28 +94,36 @@ export function ComparisonChartInner({
               data={filteredData}
               margin={{ bottom: 24, left: 12, right: 12, top: 12 }}
             >
-              <CartesianGrid stroke="#e2e8f0" vertical={false} />
+              <CartesianGrid stroke="var(--chart-grid)" vertical={false} />
               <XAxis
                 dataKey="name"
                 interval={0}
-                stroke="#64748b"
+                stroke="var(--chart-axis)"
                 tick={{ fontSize: 11 }}
                 tickLine={false}
               />
               <YAxis
-                stroke="#64748b"
+                stroke="var(--chart-axis)"
                 tickFormatter={(value) => `$${Number(value) / 1000000}M`}
                 tickLine={false}
               />
-              <Tooltip formatter={(value) => formatMoney(Number(value))} />
+              <Tooltip
+                formatter={(value) => formatMoney(Number(value))}
+                contentStyle={{
+                  background: "var(--bg-elevated)",
+                  borderColor: "var(--border-primary)",
+                  color: "var(--text-primary)",
+                  borderRadius: 8,
+                }}
+              />
               <Legend />
               <Bar
                 dataKey="projected"
-                fill="#0ea5e9"
+                fill="var(--chart-projected)"
                 name="Proyectado"
                 radius={[4, 4, 0, 0]}
               />
-              <Bar dataKey="real" fill="#22c55e" name="Real" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="real" fill="var(--chart-real)" name="Real" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

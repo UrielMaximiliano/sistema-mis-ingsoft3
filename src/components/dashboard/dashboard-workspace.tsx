@@ -56,7 +56,14 @@ export function DashboardWorkspace({
 
   return (
     <>
-      <section className="flex flex-col justify-between gap-4 rounded-lg border border-stone-200 bg-white p-4 shadow-sm sm:flex-row sm:items-end">
+      <section
+        className="flex flex-col justify-between gap-4 rounded-xl border p-4 sm:flex-row sm:items-end"
+        style={{
+          background: "var(--bg-surface)",
+          borderColor: "var(--border-primary)",
+          boxShadow: "var(--shadow-card)",
+        }}
+      >
         <ChannelScopeFilter onChange={setScope} value={scope} />
         <ReportActions
           movements={filteredMovements}

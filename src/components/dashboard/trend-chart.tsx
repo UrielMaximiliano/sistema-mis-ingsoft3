@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SkeletonChart } from "@/components/ui/skeleton";
 import type { TrendChartProps } from "@/components/dashboard/trend-chart-inner";
 
 const TrendChartInner = dynamic(
@@ -17,9 +18,7 @@ const TrendChartInner = dynamic(
           <CardTitle>Tendencia predictiva</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex h-[300px] items-center justify-center rounded-lg bg-slate-50 text-sm text-slate-500">
-            Cargando tendencia...
-          </div>
+          <SkeletonChart height="h-[300px]" />
         </CardContent>
       </Card>
     ),

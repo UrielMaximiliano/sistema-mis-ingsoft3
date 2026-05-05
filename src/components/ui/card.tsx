@@ -2,13 +2,20 @@ import type { HTMLAttributes } from "react";
 
 import { cn } from "@/lib/utils";
 
-export function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function Card({ className, style, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <section
       className={cn(
-        "rounded-lg border border-stone-200 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.05)]",
+        "rounded-xl border transition-all duration-300",
+        "hover:shadow-[var(--shadow-elevated)]",
         className,
       )}
+      style={{
+        background: "var(--bg-surface)",
+        borderColor: "var(--border-primary)",
+        boxShadow: "var(--shadow-card)",
+        ...style,
+      }}
       {...props}
     />
   );
@@ -22,9 +29,10 @@ export function CardTitle({ className, ...props }: HTMLAttributes<HTMLHeadingEle
   return (
     <h2
       className={cn(
-        "text-sm font-semibold uppercase tracking-[0.12em] text-slate-500",
+        "text-sm font-semibold uppercase tracking-[0.12em]",
         className,
       )}
+      style={{ color: "var(--text-tertiary)" }}
       {...props}
     />
   );

@@ -6,6 +6,7 @@ import { LogIn } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { hasSupabaseEnv } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/browser";
 import type { UserRole } from "@/lib/supabase/types";
@@ -64,13 +65,25 @@ export function LoginForm() {
   }
 
   return (
-    <div className="w-full max-w-md rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+    <div
+      className="w-full max-w-md rounded-xl border p-6 animate-fade-in-up"
+      style={{
+        background: "var(--bg-surface)",
+        borderColor: "var(--border-primary)",
+        boxShadow: "var(--shadow-elevated)",
+      }}
+    >
       <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-        <div>
-          <h1 className="text-2xl font-semibold text-slate-950">Cuchermercado MIS</h1>
-          <p className="mt-2 text-sm text-slate-600">
-            Ingreso con email y password para perfiles Admin, Tesoreria y Operacion.
-          </p>
+        <div className="flex items-start justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold" style={{ color: "var(--text-primary)" }}>
+              Cuchermercado MIS
+            </h1>
+            <p className="mt-2 text-sm" style={{ color: "var(--text-secondary)" }}>
+              Ingreso con email y password para perfiles Admin, Tesoreria y Operacion.
+            </p>
+          </div>
+          <ThemeToggle />
         </div>
 
         <div className="grid gap-2">
@@ -99,7 +112,12 @@ export function LoginForm() {
         </div>
 
         {error ? (
-          <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
+          <p
+            className="rounded-lg px-3 py-2 text-sm"
+            style={{ background: "var(--accent-red-soft)", color: "var(--accent-red)" }}
+          >
+            {error}
+          </p>
         ) : null}
 
         <Button disabled={loading} type="submit">
@@ -109,8 +127,13 @@ export function LoginForm() {
       </form>
 
       {!supabaseReady ? (
-        <div className="mt-5 border-t border-slate-200 pt-5">
-          <p className="text-sm font-medium text-slate-700">Modo demo sin Supabase</p>
+        <div
+          className="mt-5 border-t pt-5"
+          style={{ borderColor: "var(--border-primary)" }}
+        >
+          <p className="text-sm font-medium" style={{ color: "var(--text-secondary)" }}>
+            Modo demo sin Supabase
+          </p>
           <div className="mt-3 grid gap-2 sm:grid-cols-3">
             {Object.entries(demoRoutes).map(([role, href]) => (
               <Button

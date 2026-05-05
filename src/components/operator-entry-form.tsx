@@ -76,15 +76,20 @@ export function OperatorEntryForm({ categories, channels }: OperatorEntryFormPro
   }
 
   return (
-    <Card className="mx-auto w-full max-w-xl overflow-hidden border-teal-100">
-      <div className="h-1 bg-teal-700" />
-      <CardHeader className="bg-white">
+    <Card className="mx-auto w-full max-w-xl overflow-hidden">
+      <div className="h-1" style={{ background: "var(--accent-emerald)" }} />
+      <CardHeader>
         <div className="flex items-start justify-between gap-4">
           <div>
             <CardTitle>Carga ciega</CardTitle>
-            <p className="mt-2 text-sm text-slate-600">Movimiento operativo</p>
+            <p className="mt-2 text-sm" style={{ color: "var(--text-secondary)" }}>
+              Movimiento operativo
+            </p>
           </div>
-          <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-teal-50 text-teal-700">
+          <span
+            className="inline-flex size-10 shrink-0 items-center justify-center rounded-lg"
+            style={{ background: "var(--accent-emerald-soft)", color: "var(--accent-emerald)" }}
+          >
             <ShieldCheck className="size-5" />
           </span>
         </div>
@@ -121,7 +126,7 @@ export function OperatorEntryForm({ categories, channels }: OperatorEntryFormPro
           <div className="grid gap-2">
             <Label htmlFor="amount">Importe</Label>
             <Input
-              className="h-14 text-xl font-semibold"
+              className="h-14 text-xl font-semibold font-mono"
               id="amount"
               inputMode="decimal"
               min="0.01"
@@ -177,11 +182,11 @@ export function OperatorEntryForm({ categories, channels }: OperatorEntryFormPro
 
           {message ? (
             <p
-              className={
-                message.tone === "success"
-                  ? "inline-flex items-center gap-2 rounded-lg bg-teal-50 px-3 py-2 text-sm font-medium text-teal-800"
-                  : "rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-700"
-              }
+              className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium"
+              style={{
+                background: message.tone === "success" ? "var(--accent-emerald-soft)" : "var(--accent-red-soft)",
+                color: message.tone === "success" ? "var(--accent-emerald)" : "var(--accent-red)",
+              }}
             >
               {message.tone === "success" ? <CheckCircle2 className="size-4" /> : null}
               {message.text}

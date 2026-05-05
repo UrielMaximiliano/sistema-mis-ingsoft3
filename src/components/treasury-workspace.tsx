@@ -73,16 +73,37 @@ export function TreasuryWorkspace({
   return (
     <>
       <TreasuryDataEntryForm categories={categories} channels={channels} />
-      <section className="rounded-lg border border-stone-200 bg-white p-4 shadow-sm">
+      <section
+        className="rounded-xl border p-4"
+        style={{
+          background: "var(--bg-surface)",
+          borderColor: "var(--border-primary)",
+          boxShadow: "var(--shadow-card)",
+        }}
+      >
         <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-end">
           <ChannelScopeFilter onChange={setScope} value={scope} />
           <div className="grid gap-3 sm:grid-cols-[auto_auto_auto] sm:items-center">
-            <div className="inline-flex items-center gap-2 rounded-lg border border-stone-200 bg-stone-50 px-3 py-2 text-sm font-semibold text-slate-700">
-              <Rows3 className="size-4 text-slate-500" />
+            <div
+              className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold"
+              style={{
+                background: "var(--bg-inset)",
+                borderColor: "var(--border-primary)",
+                color: "var(--text-secondary)",
+              }}
+            >
+              <Rows3 className="size-4" style={{ color: "var(--text-tertiary)" }} />
               {filteredMovements.length} registros
             </div>
-            <div className="inline-flex items-center gap-2 rounded-lg border border-stone-200 bg-stone-50 px-3 py-2 text-sm font-semibold text-slate-700">
-              <Landmark className="size-4 text-slate-500" />
+            <div
+              className="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-semibold"
+              style={{
+                background: "var(--bg-inset)",
+                borderColor: "var(--border-primary)",
+                color: "var(--text-secondary)",
+              }}
+            >
+              <Landmark className="size-4" style={{ color: "var(--text-tertiary)" }} />
               {channelCount || 0} canales
             </div>
             <Button disabled={exporting} onClick={exportExcel} type="button" variant="outline">
